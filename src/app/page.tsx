@@ -1,9 +1,14 @@
-import { User } from "lucide-react";
-import Image from "next/image";
+import { cookies } from "next/headers";
 
-import nlwLogo from "../assets/nlw-spacetime-logo.svg";
+import { Copyright } from "../components/Copyright";
+import { EmptyMemories } from "../components/EmptyMemories";
+import { Hero } from "../components/Hero";
+import { SignIn } from "../components/SignIn";
+import { Profile } from "../components/Profile";
 
 export default function Home() {
+  const isAuthenticated = cookies().has("token");
+
   return (
     <main className="grid min-h-screen grid-cols-2">
       <div className="relative flex flex-col items-start justify-between overflow-hidden border-r border-white/10 bg-[url(../assets/bg-stars.svg)] bg-cover px-28 py-16">
@@ -11,63 +16,13 @@ export default function Home() {
 
         <div className="absolute bottom-0 right-2 top-0 w-2 bg-stripes"></div>
 
-        <a
-          href=""
-          className="flex items-center gap-3 text-left transition-colors hover:text-gray-50"
-        >
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-400">
-            <User className="h5 w5 text-gray-500"></User>
-          </div>
-
-          <p className="max-w-[140px] text-sm leading-snug ">
-            <span className="underline">Crie sua conta </span> e salve suas
-            memórias!
-          </p>
-        </a>
-
-        <div className="space-y-5">
-          <Image src={nlwLogo} alt="Nlw"></Image>
-          <div className="max-w-[420px] space-y-1">
-            <h1 className=" text-5xl font-bold leading-tight text-gray-50">
-              Sua cápsula do tempo
-            </h1>
-            <p className=" text-lg leading-relaxed">
-              Colecione momentos marcantes da sua jornada e compartilhe (se
-              quiser) com o mundo!
-            </p>
-          </div>
-
-          <a
-            className="inline-block rounded-full bg-green-500 px-5 py-3 font-alt text-sm uppercase leading-none text-black hover:bg-green-600"
-            href=""
-          >
-            CADASTRAR LEMBRANÇA
-          </a>
-        </div>
-
-        <div className="text-sm leading-relaxed text-gray-200">
-          Feito com 💜 no NLW da{" "}
-          <a
-            target="_blank"
-            rel="noreferrer"
-            className="underline hover:text-gray-100"
-            href="https://rocketseat.com.br"
-          >
-            Rocketseat
-          </a>
-        </div>
+        {isAuthenticated ? <Profile /> : <SignIn />}
+        <Hero />
+        <Copyright />
       </div>
 
       <div className=" flex flex-col bg-[url(../assets/bg-stars.svg)] bg-cover p-16">
-        <div className="flex h-full items-center justify-center">
-          <p className="w-[360px] text-center leading-relaxed">
-            Você ainda não registrou nenhuma lembrança, comece a{" "}
-            <a className="underline hover:text-gray-50" href="">
-              criar agora
-            </a>
-            !
-          </p>
-        </div>
+        <EmptyMemories />
       </div>
     </main>
   );
